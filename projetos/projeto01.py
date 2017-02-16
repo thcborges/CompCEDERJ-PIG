@@ -33,7 +33,7 @@ class Fracao:
     def __eq__(self, other):
         return self.__numerador == other.__numerador and self.__denominador == other.__denominador
 
-    def __div__(self, other):
+    def __truediv__(self, other):
         return Fracao(self.__numerador * other.get_denominador(), self.__denominador * other.get_numerador())
 
     def simplificar(self):
@@ -90,8 +90,7 @@ def operacao(frac):
             frac *= ler_fracao()
             return frac
         elif operador == "/":
-            nova = ler_fracao()
-            frac *= Fracao(nova.get_denominador(), nova.get_numerador())
+            frac /= ler_fracao()
             return frac
         elif operador == "=":
             frac == ler_fracao()
