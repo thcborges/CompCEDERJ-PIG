@@ -1,0 +1,7 @@
+arq = open("teste", "w")
+arq.write("Oi!")
+arq.close()
+arq = open("teste")
+x = arq.read()
+print(x)
+arq.close()
