@@ -5,6 +5,6 @@ try:
 
 except TypeError:
     print("Erro, tipo errado")
-except (Exception) as e:
+except Exception as e:
     print("Erro:", e)
     raise
