@@ -61,9 +61,11 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/pycharm
 
+.idea/
 api_google_drive.py
 client_secret.json
 emails.txt
 Aula 04/documentação
 Aula 04/html/
 Aula 04/latex/
+Aula 05/__pycache__/
