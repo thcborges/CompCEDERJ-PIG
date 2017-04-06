@@ -16,6 +16,6 @@ for txt, val in (("preto", "black"),
                  ("vermelho", 'red'),
                  ('azul', 'blue'),
                  ('verde', 'green')):
-    Radiobutton(text=txt, value=val, variable=cor, command=pinta, indicatoron=False).pack(fill='x')
+    Radiobutton(text=txt, value=val, variable=cor, command=pinta, indicatoron=False).pack(fill1565='x')
 
 mainloop()
