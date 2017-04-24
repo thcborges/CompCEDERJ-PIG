@@ -1,10 +1,6 @@
 from enum import Enum
 
 
-##
-#  Enumerated type representing possible status after
-#  guessing a word in the BullsAndCows game.
-#
 class Status(Enum):
     START = 0
     INVALID_WORD = 1

@@ -1,33 +1,9 @@
-#!/usr/bin/env python
-# codding: UTF-8
-#
-## @package BullsAndCowsGame
-#
-#  Bulls and Cows game (also known as Cows and Bulls or Pig and Bulls or Bulls and Cleots)
-#  is an old code-breaking paper and pencil game for two players,
-#  predating the similar commercially marked board game Mastermind.
-#
-#  @author Thiago da Cunha Borges under the guidance of Paulo Roma
-#  @since 11/03/2017
-#  @see http://en.wikipedia.org/wiki/Bulls_and_cows
-#  @see http://www.python-course.eu/sets_frozensets.php
-#  @see https://www.dicio.com.br/palavras-com-cinco-letras/
-#
+import os, sys
 
-import sys
-import os
-import BullsAndCowsGame
-from WordList import WordList
-from Status import Status
-from random import randint
+from BullsAndCowsGame.BullsAndCowsGame import BullsAndCowsGame
+from BullsAndCowsGame.Status import Status
+from BullsAndCowsGame.WordList import WordList
 
-##########################################
-##
-##  Strings constants present in the game
-##
-##  Alphabetical order in the constants name
-##
-##########################################
 ATTEMPT = "Tente uma palavra: "
 BULLS = "  - Bulls: "
 BULLS_AND_COWS = "||########################||\n" \
@@ -35,7 +11,7 @@ BULLS_AND_COWS = "||########################||\n" \
                  "||         GAME           ||\n" \
                  "||########################||\n"
 COWS = "  - Cows: "
-DICTIONARY = "palavras.txt"
+DICTIONARY = "BullsAndCowsGame\palavras.txt"
 DIFICULTY = "Escolha a dificuldade do jogo.\n"
 ERROR = "ERRO!"
 GEESE = "  - Gansos: "
@@ -51,37 +27,16 @@ PLAYER2 = "Jogador 2"
 PLAY_AGAIN = "Deseja Jogar novamente? (S/N)\n"
 WIN = "PARABÉNS!!!\n{0}\nVENCEU O JOGO!"
 
-## TexUI class
-#
-#   Responsible for the user interface of the game.
-#
-#   @var self.player saves the current player.
-#
-#   @var self.__game saves the game running.
-#
-#   @var self.status used to check the current situation of the game.
-#
-#   @var self.condition saves the current state of the game.
-# It is started as self.status.START informing you that a new game was created
-#
+
 class TextUI:
-    ## Contingent class.
-    #
-    #  Starts the necessary variables.
-    #
+
     def __init__(self, given_game):
         self.player = PLAYER1
         self.__game = given_game
         self.status = Status
         self.condition = self.status.START
 
-    ## Method runUI
-    #
-    #   Where the game happens.
-    #   The state of the game is tested at each tie so that it is possible
-    #   to know what happens next, how to keep exchanging or keeping the player.
-    #   The game loop runs until there is a winner, which is shown on the screen.
-    #
+
     def runUI(self):
         self.__game.startNewRound()
         status = Status
@@ -104,18 +59,9 @@ class TextUI:
             elif self.condition == status.LOSE_TURN or self.condition == status.INVALID_WORD:
                 self.change_player()
 
-    ## Method change_player
-    #
-    #  Responsible for changing the player of the time
-    #
     def change_player(self):
         self.player = PLAYER2 if self.player == PLAYER1 else PLAYER1
 
-    ## Static method spell
-    #
-    #   Responsible for the presentation of the letters in the game.
-    #   A space is placed between them so that the presentation and the aspect of the game is more pleasant
-    #
     @staticmethod
     def spell(word):
         list = []
@@ -123,12 +69,6 @@ class TextUI:
             list.append(letter)
         return " ".join(list)
 
-    ## Method display
-    #
-    #   Responsible for the presentation of the game on the screen.
-    #   It clears the screen every time it is called and assembles
-    #   the screen always as specified through the game state.
-    #
     def display(self):
         os.system("cls" if os.name == "nt" else "clear")
         print(BULLS_AND_COWS)
@@ -136,13 +76,8 @@ class TextUI:
         print(COWS, self.spell(self.__game.getCows()))
         print(GEESE, self.spell(self.__game.getGeese()))
         print(GUESS, self.spell(self.__game.getAllGuessedLetters()))
-        print("\n" + self.condition_message() + "\n")
+        print("\n" + self.condition_message() + "\n==> Palavra secreta: " + self.__game.getSecretWord() + "\n")
 
-    ## Method condition_message
-    #
-    #   Returns a message according to the condition of the game.
-    #   This message is displayed on the screen using the display method
-    #
     def condition_message(self):
         if self.condition == self.status.START:
             return NEW_GAME
@@ -157,10 +92,6 @@ class TextUI:
         else:
             return ERROR
 
-    ## Method playAgain
-    #
-    # Asks the players if they want to start a new game turn
-    #
     def playAgain(self):
         play = input(PLAY_AGAIN).upper()
         if play == "S" or play == "Y":
@@ -171,3 +102,33 @@ class TextUI:
             return False
         else:
             return self.playAgain()
+
+
+def check_size():
+    os.system("cls" if os.name == "nt" else "clear")
+    print(BULLS_AND_COWS)
+    word_size = input(DIFICULTY + LETTERS_NUMBER)
+    if word_size == "4" or word_size == "5":
+        return int(word_size)
+    else:
+        print(ERROR)
+        return check_size()
+
+
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+
+    play = True
+    while play:
+        wlist = WordList(DICTIONARY)
+        size = check_size()
+
+        game = BullsAndCowsGame(wlist, size)
+        ui = TextUI(game)
+        ui.runUI()
+        play = ui.playAgain()
+
+
+if __name__ == '__main__':
+    sys.exit(main())
