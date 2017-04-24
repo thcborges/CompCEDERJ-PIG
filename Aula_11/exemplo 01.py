@@ -7,7 +7,7 @@ class Application(Frame):
         self.msg = Label(self, text="Hello, World")
         self.msg.pack()
 
-        self.bye = Button(self, text="Bye", command=self.quit())
+        self.bye = Button(self, text="Bye", command=self.quit)
         self.bye.pack()
 
         self.pack()
